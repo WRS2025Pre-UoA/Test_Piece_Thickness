@@ -5,12 +5,13 @@
 #include <regex>
 
 // 前処理とクロップを行う関数
-cv::Mat preprocessAndCrop(const cv::Mat& image, const cv::Rect& roi) {
+cv::Mat preprocessAndCrop(const cv::Mat& image, int x, int y, int width, int height) {
     // グレースケール
     cv::Mat gray;
     cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
 
     // ROIでクロップ
+    cv::Rect roi(x, y, width, height);
     cv::Mat cropped = gray(roi);
 
     // ぼかし＋しきい値処理
@@ -45,15 +46,14 @@ std::string extractNumberFromImage(const cv::Mat& thresh) {
 
 int main() {
     // 画像の読み込み
-    cv::Mat image = cv::imread("3brightimgMu200.jpg");
+    cv::Mat image = cv::imread("../test/IMG_9.png");
     if (image.empty()) {
         std::cerr << "❌ 画像が読み込めません" << std::endl;
         return -1;
     }
 
     try {
-        cv::Rect roi(60, 15, 220, 55);
-        cv::Mat thresh = preprocessAndCrop(image, roi);
+        cv::Mat thresh = preprocessAndCrop(image, 365, 150, 170, 150);
 
         std::string number = extractNumberFromImage(thresh);
         if (!number.empty()) {
