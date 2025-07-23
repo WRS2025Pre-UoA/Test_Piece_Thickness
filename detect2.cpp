@@ -39,9 +39,17 @@ std::string extractNumberFromImage(const cv::Mat& thresh) {
     std::regex numberRegex(R"(\d+\.\d+|\d+)");
     std::smatch match;
     if (std::regex_search(text, match, numberRegex)) {
-        return match.str();
+        std::string numberStr = match.str();
+        // 「00.49」などの不正フォーマットを検出
+        if (std::regex_match(numberStr, std::regex(R"(0\d+\.\d+|0\d+)"))) {
+            throw std::invalid_argument("不正な数値形式が検出されました: " + numberStr);
+        }
+
+        // doubleに変換
+        return std::stod(numberStr);
     }
-    return "";
+
+    throw std::runtime_error("数値が認識できませんでした");
 }
 
 int main() {
@@ -55,14 +63,9 @@ int main() {
     try {
         cv::Mat thresh = preprocessAndCrop(image, 365, 150, 170, 150);
 
-        std::string number = extractNumberFromImage(thresh);
-        if (!number.empty()) {
-            std::cout << "🔢 数字抽出結果: " << number << std::endl;
-        } else {
-            std::cout << "❌ 認識できた数字が見つかりませんでした" << std::endl;
-        }
+        double number = extractNumberFromImage(thresh);
+        std::cout << "🔢 数字抽出結果: " << number << std::endl;
 
-        // 表示
         cv::imshow("thresh", thresh);
         cv::waitKey(0);
         cv::destroyAllWindows();
