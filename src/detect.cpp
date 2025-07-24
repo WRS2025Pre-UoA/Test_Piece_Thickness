@@ -5,8 +5,9 @@
 #include <regex>
 
 int main() {
+    std::string path = "../thicknessImage/IMG_8.png";
     // 画像の読み込み
-    cv::Mat image = cv::imread("IMG_8.png");
+    cv::Mat image = cv::imread(path);
     if (image.empty()) {
         std::cerr << "画像が読み込めません" << std::endl;
         return -1;

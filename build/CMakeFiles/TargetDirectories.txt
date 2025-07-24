@@ -1,0 +1,4 @@
+/home/ros2_louis/Test_Piece_Thickness/build/CMakeFiles/detect.dir
+/home/ros2_louis/Test_Piece_Thickness/build/CMakeFiles/detect2.dir
+/home/ros2_louis/Test_Piece_Thickness/build/CMakeFiles/edit_cache.dir
+/home/ros2_louis/Test_Piece_Thickness/build/CMakeFiles/rebuild_cache.dir
